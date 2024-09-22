@@ -73,12 +73,12 @@ module.exports = {
 }
 ```
 选择Tokens (classic)  将repo都勾选上
-在github上生成一个个人token:  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
-另一个token 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
-cmd打开dos窗口 set GITHUB_TOKEN=your-github-token 【这个设置方式是会话token，关闭窗口后就失效，许要在我的电脑，属性-高级系统设置-系统环境变量中新建 GITHUB_TOKEN=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】
+在github上生成一个个人token:  xxx
+另一个token xxx
+cmd打开dos窗口 set GITHUB_TOKEN=your-github-token 【这个设置方式是会话token，关闭窗口后就失效，许要在我的电脑，属性-高级系统设置-系统环境变量中新建 GITHUB_TOKEN=xxx】
 然后关闭vscode，删除out文件，从新打包发布
 
-在dos窗口中执行 curl -H "Authorization: token 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" https://api.github.com/user
+在dos窗口中执行 curl -H "Authorization: token xxx" https://api.github.com/user
 能打印出自己的github信息，就代表token生效了
 
 执行yarn run publish 或 npm run publish 避免和发布npm包的命令(yarn publish或npm publish)冲突
