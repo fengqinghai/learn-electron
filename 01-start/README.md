@@ -73,8 +73,7 @@ module.exports = {
 }
 ```
 选择Tokens (classic)  将repo都勾选上
-在github上生成一个个人token???
-另一个token???
+在github上生成一个个人GITHUB_TOKEN
 cmd打开dos窗口 set GITHUB_TOKEN=your-github-token 【这个设置方式是会话token，关闭窗口后就失效，许要在我的电脑，属性-高级系统设置-系统环境变量中新建 GITHUB_TOKEN=???】
 然后关闭vscode，删除out文件，从新打包发布
 
