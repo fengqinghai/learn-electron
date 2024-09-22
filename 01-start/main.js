@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -13,6 +13,7 @@ const createWindow = () => {
 }
 
 app.whenReady().then(() => {
+  ipcMain.handle('ping', () => 'pong')
   createWindow()
   // 如果没有窗口打开则打开一个窗口 (macOS)
   app.on('activate', () => {

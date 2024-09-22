@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <title>来自 Electron 渲染器的问好！</title>
   </head>
   <body>
     <h1>Hello World!</h1>
     内置 Node.js 版本 <span id="node-version"></span>,
     内置 Chromium 版本<span id="chrome-version"></span>,
     内置 Electron 版本<span id="electron-version"></span>.
+    <h1>来自 Electron 渲染器的问好！</h1>
+    <p>👋</p>
+    <p id="info"></p>
     <script src="./renderer.js"></script>
   </body>
 </html>
