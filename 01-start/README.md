@@ -27,3 +27,5 @@ yarn add --dev @electron-forge/cli
 npx electron-forge import
 3，使用 Forge 的 make 命令来创建可分发的应用程序
 yarn make
+
+补充，第一次执行yarn make报错了，第二次执行成功打包了
