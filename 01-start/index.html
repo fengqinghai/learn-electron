@@ -8,7 +8,7 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
-    <title>来自 Electron 渲染器的问好！</title>
+    <title>来自 Electron 渲染器的问好！2</title>
   </head>
   <body>
     <h1>Hello World!</h1>
@@ -18,6 +18,12 @@
     <h1>来自 Electron 渲染器的问好！</h1>
     <p>👋</p>
     <p id="info"></p>
+    Title: <input id="title"/>
+    <button id="btn" type="button">Set</button>
+    <button type="button" id="btn-open-file">Open a File</button>
+    File path: <strong id="filePath"></strong>
+    <br>
+    Current value: <strong id="counter">0</strong>
     <script src="./renderer.js"></script>
   </body>
 </html>

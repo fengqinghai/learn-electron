@@ -6,4 +6,30 @@ const func = async () => {
   console.log(response) // 打印 'pong'
 }
 
-func()
+func();
+// 动态设置窗口标题
+const setButton = document.getElementById('btn')
+const titleInput = document.getElementById('title')
+setButton.addEventListener('click', () => {
+  const title = titleInput.value
+  window.electronAPI.setTitle(title)
+})
+
+
+// 双向通信，打开原生文件对话框，并返回选择文件的路径
+const btnOpenFile = document.getElementById('btn-open-file')
+const filePathElement = document.getElementById('filePath')
+
+btnOpenFile.addEventListener('click', async () => {
+  const filePath = await window.electronAPI.openFile()
+  filePathElement.innerText = filePath
+})
+// 计数器
+const counter = document.getElementById('counter')
+
+window.electronAPI.onUpdateCounter((value) => {
+  const oldValue = Number(counter.innerText)
+  const newValue = oldValue + value
+  counter.innerText = newValue.toString()
+  window.electronAPI.counterValue(newValue)
+})

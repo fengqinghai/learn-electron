@@ -18,3 +18,10 @@ contextBridge.exposeInMainWorld('versions', {
   ping: () => ipcRenderer.invoke('ping')
   // 除函数之外，我们也可以暴露变量
 })
+contextBridge.exposeInMainWorld('electronAPI', {
+  setTitle: (title) => ipcRenderer.send('set-title', title), // 动态设置窗口标题
+  openFile: () => ipcRenderer.invoke('dialog:openFile'), // 打开原生文件对话框
+  // 计数器
+  onUpdateCounter: (callback) => ipcRenderer.on('update-counter', (_event, value) => callback(value)),
+  counterValue: (value) => ipcRenderer.send('counter-value', value),
+})

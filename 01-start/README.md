@@ -83,5 +83,25 @@ cmd打开dos窗口 set GITHUB_TOKEN=掏肯 【这个设置方式是会话token�
 执行yarn run publish 或 npm run publish 避免和发布npm包的命令(yarn publish或npm publish)冲突
 成功发布!!!
 
+# 检测更新程序代码
+ Electron 应用通过 autoUpdater 模块来实现此功能, 此模块可以从更新服务源中读取信息, 并检查是否有一个新版本可供下载.
+ 为了让整个过程更加简单, Electron 团队维护 update-electron-app 模块, 它在一次函数调用中为 update.electronjs.org 设置了 autoUpdater 样板，无需配置。 这个模块将搜索 update.electronjs.org 源中与项目内 package.json 的"repository" 字段匹配的部分。
+
+首先，安装模块作为运行时的依赖项
+yarn add update-electron-app
+
+main.js
+```
+require('update-electron-app')()
+```
+这是需要做的事情！ 一旦你的应用程序被打包，它将在你发布每个新的 GitHub 版本时更新自己。
+
+需要再package.json中配置好仓库
+"repository": {
+  "type": "git",
+  "url": "https://github.com/fengqinghai/learn-electron.git"
+},
+
+# 进程沙盒化
 
 
