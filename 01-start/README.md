@@ -102,6 +102,6 @@ require('update-electron-app')()
   "url": "https://github.com/fengqinghai/learn-electron.git"
 },
 
-# 进程沙盒化
+# 进度条
 
 

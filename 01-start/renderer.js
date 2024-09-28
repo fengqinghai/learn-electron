@@ -33,3 +33,19 @@ window.electronAPI.onUpdateCounter((value) => {
   counter.innerText = newValue.toString()
   window.electronAPI.counterValue(newValue)
 })
+
+function handleKeyPress (event) {
+  console.log(`You pressed ${event.key}`)
+}
+
+window.addEventListener('keyup', handleKeyPress, true)
+// 拖放事件
+document.body.addEventListener('drop', (event) => {
+  console.log('drop', event)
+  // event.preventDefault();
+});
+
+document.getElementById('notice').addEventListener('click', () => {
+  window.electronAPI.notice({title: '通知', body: '哈哈哈'});
+  new Notification('嘿嘿', { body: '啦啦啦' })
+})

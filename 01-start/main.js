@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, Menu, shell, globalShortcut, Notification } = require('electron')
 const path = require('node:path')
 const updateElectronApp = require('update-electron-app');
 updateElectronApp.updateElectronApp()
@@ -30,11 +30,16 @@ const createWindow = () => {
         {
           click: () => mainWindow.webContents.send('update-counter', -1),
           label: 'Decrement'
+        },
+        { // 用默认浏览器打开网页
+          click: () => shell.openExternal('http://www.baidu.com'),
+          label: 'openExternal'
         }
       ]
     }
   ]);
-  Menu.setApplicationMenu(menu);
+  // Menu.setApplicationMenu(menu);
+  // Menu.setApplicationMenu(null); // 不需要默认菜单时
   ipcMain.on('counter-value', (_event, value) => {
     console.log(value) // will print value to Node console
   })
@@ -46,6 +51,21 @@ const createWindow = () => {
   })
   // 双向通信，打开原生文件对话框,返回选择的问价你路径
   ipcMain.handle('dialog:openFile', handleFileOpen);
+  // 拦截快捷键(这样会拦截web中监听键盘事件 ctrl+i会被拦截)
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    // console.log('input.key', input.key)
+    if (input.control && input.key.toLowerCase() === 'i') {
+      console.log('Pressed Control+I')
+      event.preventDefault()
+    }
+  })
+
+  // 通知
+  
+  ipcMain.on('main-notice', (_event, value) => {
+    const {title, body} = value;
+    new Notification({ title, body }).show();
+  })
 
   mainWindow.loadFile('index.html')
 }
@@ -56,6 +76,10 @@ app.whenReady().then(() => {
   // 如果没有窗口打开则打开一个窗口 (macOS)
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+  // 注册全局快捷键
+  globalShortcut.register('Alt+CommandOrControl+I', () => {
+    console.log('Electron loves global shortcuts!')
   })
 
 })

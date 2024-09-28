@@ -24,4 +24,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // 计数器
   onUpdateCounter: (callback) => ipcRenderer.on('update-counter', (_event, value) => callback(value)),
   counterValue: (value) => ipcRenderer.send('counter-value', value),
+  notice: value => ipcRenderer.send('main-notice', value),
 })
