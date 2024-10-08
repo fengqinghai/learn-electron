@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Menu, shell, globalShortcut, Notification } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, Menu, shell, globalShortcut, Notification, Tray, nativeImage } = require('electron')
 const path = require('node:path')
 const updateElectronApp = require('update-electron-app');
 updateElectronApp.updateElectronApp()
@@ -10,10 +10,14 @@ async function handleFileOpen () {
     return filePaths[0]
   }
 }
+let progressInterval = null;
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    frame: true, // frame: false 无边框窗口是没有 chrome 的窗口，窗口的 chrome 是指窗口的某些部分（例如工具栏、控件等），它们不是网页的一部分。
+    titleBarStyle: 'hidden', // titleBarStyle: 'hidden'和frame: false可以达到相同的效果，一个是隐藏一个是不需要
+    // transparent: true, // 创建透明窗口 设置titleBarStyle: 'hidden'时才生效？
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -68,8 +72,28 @@ const createWindow = () => {
   })
 
   mainWindow.loadFile('index.html')
-}
 
+  // 进度条
+  const INCREMENT = 0.03
+  const INTERVAL_DELAY = 100 // ms
+  let c = 0
+  progressInterval = setInterval(() => {
+    // update progress bar to next value
+    // values between 0 and 1 will show progress, >1 will show indeterminate or stick at 100%
+    mainWindow.setProgressBar(c)
+
+    // increment or reset progress bar
+    if (c < 2) {
+      c += INCREMENT
+    } else {
+      c = (-INCREMENT * 5) // reset to a bit less than 0 to show reset state
+    }
+  }, INTERVAL_DELAY);
+
+  // 创建点击穿透窗口
+  // mainWindow.setIgnoreMouseEvents(true)
+}
+let tray; // 系统托盘
 app.whenReady().then(() => {
   ipcMain.handle('ping', () => 'pong')
   createWindow()
@@ -81,9 +105,26 @@ app.whenReady().then(() => {
   globalShortcut.register('Alt+CommandOrControl+I', () => {
     console.log('Electron loves global shortcuts!')
   })
-
+  // 添加系统托盘
+  const icon = nativeImage.createFromPath(path.resolve(__dirname, './public/image/testIcon.png'))
+  tray = new Tray(icon);
+  // 开始将上下文菜单附加到我们的托盘上
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' }
+  ]);
+  tray.setContextMenu(contextMenu)
+  // 给我们的托盘一个工具提示和标题。
+  tray.setToolTip('托盘提示')
+  tray.setTitle('托盘标题')
 })
 // 关闭所有窗口时退出应用 (Windows & Linux)  如果用户不是在 macOS(darwin) 上运行程序，则调用 app.quit()。
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+})
+// app退出时, clear both timers
+app.on('before-quit', () => {
+  clearInterval(progressInterval)
 })
