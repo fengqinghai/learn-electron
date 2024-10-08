@@ -1,6 +1,7 @@
 appId: com.electron.app
 productName: 02-electron-vite
 directories:
+  output: 'dist/${version}'
   buildResources: build
 files:
   - '!**/.vscode/*'
