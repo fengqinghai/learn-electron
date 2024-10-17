@@ -1,0 +1,12 @@
+{
+  "name": "04-test",
+  "version": "1.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^33.0.1"
+  }
+}
